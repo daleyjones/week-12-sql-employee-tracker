@@ -1,17 +1,18 @@
+
+require('dotenv').config();
 const inquirer = require('inquirer');
 const { MainMenuQuestions, AddDepartmentQuestions, AddRoleQuestions, AddEmployeeQuestions, UpdateEmployeeRoleQuestions } = require('./questions');
 const EmployeeDatabase = require('./db/EmployeeDatabase.js');
 
 
-const db =new  EmployeeDatabase({
 
-  host: 'localhost',
-  user: 'root',
-  password: 'Daley281092!',
-  database: 'employee_db'
+
+const db = new EmployeeDatabase({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
 });
-
-
 
 db.connect();
 const doMenuQuestions = () => {
