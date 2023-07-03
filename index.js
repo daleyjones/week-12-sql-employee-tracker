@@ -16,37 +16,29 @@ db.connect();
 
 const doMenuQuestions = () => {
     inquirer
-        .prompt(MainMenuQuestions)
-        .then((response) => {
-            switch (response.option) {
-                case 'view_departments':
-                    view_departments();
-                    break;
-                case 'view_roles':
-                    view_roles();
-                    break;
-                case 'view_employees':
-                    view_employees();
-                    break;
-                case 'add_department':
-                    add_department();
-                    break;
-                case 'add_role':
-                    add_role();
-                    break;
-                case 'add_employee':
-                    add_employee();
-                    break;
-                case 'update_role':
-                    update_role();
-                    break;
-                default:
-                    console.log('Invalid option');
-                    doMenuQuestions();
-                    break;
-            }
-        });
-};
+      .prompt(MainMenuQuestions)
+      .then((response) => {
+        if (response.option === 'view_departments') {
+          view_departments();
+        } else if (response.option === 'view_roles') {
+          view_roles();
+        } else if (response.option === 'view_employees') {
+          view_employees();
+        } else if (response.option === 'add_department') {
+          add_department();
+        } else if (response.option === 'add_role') {
+          add_role();
+        } else if (response.option === 'add_employee') {
+          add_employee();
+        } else if (response.option === 'update_role') {
+          update_role();
+        } else {
+          console.log('Invalid option');
+          doMenuQuestions();
+        }
+      });
+  };
+  
 
 const view_departments = () => {
     db.getDepartments().then((results) => {
