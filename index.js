@@ -2,12 +2,15 @@ const inquirer = require('inquirer');
 const { MainMenuQuestions, AddDepartmentQuestions, AddRoleQuestions, AddEmployeeQuestions, UpdateEmployeeRoleQuestions } = require('./questions');
 const { EmploymentDatabase } = require('./EmployeeDatabase');
 
-const db = new EmploymentDatabase({
+const { host, user, password, database } = {
     host: 'localhost',
     user: 'root',
     password: 'Daley281092!',
     database: 'employee_db'
-});
+  };
+  
+  const db = new EmployeeDatabase({ host, user, password, database });
+  
 
 db.connect();
 
