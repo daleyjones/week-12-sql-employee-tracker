@@ -98,7 +98,7 @@ const add_role = () => {
 const add_employee = () => {
   Promise.all([db.getRoles(), db.getEmployees()]).then(([roles, employees]) => {
     const roleQuestion = AddEmployeeQuestions[2];
-    const managerQuestion = AddEmployeeQuestions[3];
+    const managerQuestion = AddEmployeeQuestions[2];
 
     roles.forEach((role) => {
       const role_summary = `${role.title} (${role.department_name}) ${role.salary}`;
