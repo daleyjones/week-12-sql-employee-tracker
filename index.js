@@ -200,6 +200,7 @@ const update_role = () => {
 
 const update_employee_manager = () => {
   db.getEmployees().then((results) => {
+    
     const employeeQuestion = UpdateEmployeeManagerQuestions[0];
 
     results.forEach((employee) => {

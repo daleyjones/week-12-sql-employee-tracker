@@ -80,6 +80,7 @@ const MainMenuQuestions = [
       type: 'list',
       name: 'role_id',
       message: "Select the employee's new role...",
+      choices: [],
     },
   ];
   const UpdateEmployeeManagerQuestions = [
