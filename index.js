@@ -238,8 +238,8 @@ const view_employees_by_manager = () => {
     });
 
     inquirer.prompt(ViewEmployeesByManagerQuestions).then((response) => {
-      const { managerId } = response;
-      db.getEmployeesByManager(managerId).then((employees) => {
+      const { manager_id } = response;
+      db.getEmployeesByManager(manager_id).then((employees) => {
         console.table(employees);
         doMenuQuestions();
       });
@@ -260,8 +260,8 @@ const view_employees_by_department = () => {
     });
 
     inquirer.prompt(ViewEmployeesByDepartmentQuestions).then((response) => {
-      const { departmentId } = response;
-      db.getEmployeesByDepartment(departmentId).then((employees) => {
+      const { department_id } = response;
+      db.getEmployeesByDepartment(department_id).then((employees) => {
         console.table(employees);
         doMenuQuestions();
       });
@@ -301,8 +301,8 @@ const delete_role = () => {
     });
 
     inquirer.prompt(DeleteRoleQuestions).then((response) => {
-      const { roleId } = response;
-      db.deleteRole(roleId).then((results) => {
+      const { role_id } = response;
+      db.deleteRole(role_id).then((results) => {
         console.log('\n', results, '\n');
         doMenuQuestions();
       });
@@ -321,8 +321,8 @@ const delete_employee = () => {
     });
 
     inquirer.prompt(DeleteEmployeeQuestions).then((response) => {
-      const { employeeId } = response;
-      db.deleteEmployee(employeeId).then((results) => {
+      const { employee_id } = response;
+      db.deleteEmployee(employee_id).then((results) => {
         console.log('\n', results, '\n');
         doMenuQuestions();
       });
