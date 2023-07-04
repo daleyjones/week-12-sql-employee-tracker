@@ -1,6 +1,12 @@
 require('dotenv').config();
 const inquirer = require('inquirer');
-const { MainMenuQuestions, AddDepartmentQuestions, AddRoleQuestions, AddEmployeeQuestions, UpdateEmployeeRoleQuestions } = require('./questions');
+const { MainMenuQuestions,AddDepartmentQuestions,AddRoleQuestions,AddEmployeeQuestions,UpdateEmployeeRoleQuestions,
+  UpdateEmployeeManagerQuestions,
+  ViewEmployeesByManagerQuestions,
+  ViewEmployeesByDepartmentQuestions,
+  DeleteDepartmentQuestions,
+  DeleteRoleQuestions,
+  DeleteEmployeeQuestions } = require('./questions');
 const EmployeeDatabase = require('./db/EmployeeDatabase.js');
 
 const db = new EmployeeDatabase({
@@ -9,7 +15,7 @@ const db = new EmployeeDatabase({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME
 });
-
+ 
 db.connect();
 
 const doMenuQuestions = () => {
@@ -31,12 +37,24 @@ const doMenuQuestions = () => {
         add_employee();
       } else if (option === 'update_role') {
         update_role();
+      } else if (option === 'update_employee_manager') {
+        update_employee_manager();
+      } else if (option === 'view_employees_by_manager') {
+        view_employees_by_manager();
+      } else if (option === 'view_employees_by_department') {
+        view_employees_by_department();
+      } else if (option === 'delete_department') {
+        delete_department();
+      } else if (option === 'delete_role') {
+        delete_role();
+      } else if (option === 'delete_employee') {
+        delete_employee();
       } else {
         console.log('Invalid option');
         doMenuQuestions();
       }
     });
-};
+  };
 
 const view_departments = () => {
 
@@ -123,7 +141,7 @@ const add_employee = () => {
       });
  db.getEmployees().then((results) => {
 
-      const managerQuestion = AddEmployeeQuestions[3];
+      const managerQuestion = AddEmployeeQuestions[2];
       results.forEach((employee) => {
         managerQuestion.choices.push({
           value: employee.id,
@@ -153,9 +171,19 @@ const add_employee = () => {
 
 const update_role = () => {
 
-  db.getEmployees().then((results) => {
+  db.getRoles().then((results) => {
 
       const employeeQuestion = UpdateEmployeeRoleQuestions[0];
+      results.forEach((employee) => {
+        employeeQuestion.choices.push({
+          value: employee.id,
+          name: employee.name
+        });
+      });
+
+
+
+      const roleQuestion = UpdateEmployeeRoleQuestions[1];
       results.forEach((employee) => {
         employeeQuestion.choices.push({
           value: employee.id,
@@ -169,11 +197,138 @@ const update_role = () => {
           db.updateEmployeeRole(response).then((results) => {
               console.log('\n', results, '\n');
               doMenuQuestions();
-                      });
-           
-                 })
+            });
           });
-       
-        }
+        });
+      };
+
+
+const update_employee_manager = () => {
+  db.getEmployees().then((results) => {
+    const employeeQuestion = UpdateEmployeeManagerQuestions[0];
+    results.forEach((employee) => {
+      employeeQuestion.choices.push({
+        value: employee.id,
+        name: employee.name
+      });
+    });
+
+    const managerQuestion = UpdateEmployeeManagerQuestions[1];
+    results.forEach((manager) => {
+      managerQuestion.choices.push({
+        value: manager.id,
+        name: manager.name
+      });
+    });
+
+    inquirer.prompt(UpdateEmployeeManagerQuestions).then((response) => {
+      db.updateEmployeeManager(response).then((results) => {
+        console.log('\n', results, '\n');
+        doMenuQuestions();
+      });
+    });
+  });
+};
+
+const view_employees_by_manager = () => {
+  db.getEmployees().then((results) => {
+    const managerQuestion = ViewEmployeesByManagerQuestions[0];
+    results.forEach((manager) => {
+      managerQuestion.choices.push({
+        value: manager.id,
+        name: manager.name
+      });
+    });
+
+    inquirer.prompt(ViewEmployeesByManagerQuestions).then((response) => {
+      const { managerId } = response;
+      db.getEmployeesByManager(managerId).then((employees) => {
+        console.table(employees);
+        doMenuQuestions();
+      });
+    });
+  });
+};
+
+const view_employees_by_department = () => {
+  db.getDepartments().then((results) => {
+    const departmentQuestion = ViewEmployeesByDepartmentQuestions[0];
+    results.forEach((department) => {
+      departmentQuestion.choices.push({
+        value: department.id,
+        name: department.name
+      });
+    });
+
+    inquirer.prompt(ViewEmployeesByDepartmentQuestions).then((response) => {
+      const { departmentId } = response;
+      db.getEmployeesByDepartment(departmentId).then((employees) => {
+        console.table(employees);
+        doMenuQuestions();
+      });
+    });
+  });
+};
+
+const delete_department = () => {
+  db.getDepartments().then((results) => {
+    const departmentQuestion = DeleteDepartmentQuestions[0];
+    results.forEach((department) => {
+      departmentQuestion.choices.push({
+        value: department.id,
+        name: department.name
+      });
+    });
+
+    inquirer.prompt(DeleteDepartmentQuestions).then((response) => {
+      const { departmentId } = response;
+      db.deleteDepartment(departmentId).then((results) => {
+        console.log('\n', results, '\n');
+        doMenuQuestions();
+      });
+    });
+  });
+};
+
+const delete_role = () => {
+  db.getRoles().then((results) => {
+    const roleQuestion = DeleteRoleQuestions[0];
+    results.forEach((role) => {
+      roleQuestion.choices.push({
+        value: role.id,
+        name: role.title
+      });
+    });
+
+    inquirer.prompt(DeleteRoleQuestions).then((response) => {
+      const { roleId } = response;
+      db.deleteRole(roleId).then((results) => {
+        console.log('\n', results, '\n');
+        doMenuQuestions();
+      });
+    });
+  });
+};
+
+const delete_employee = () => {
+  db.getEmployees().then((results) => {
+    const employeeQuestion = DeleteEmployeeQuestions[0];
+    results.forEach((employee) => {
+      employeeQuestion.choices.push({
+        value: employee.id,
+        name: employee.name
+      });
+    });
+
+    inquirer.prompt(DeleteEmployeeQuestions).then((response) => {
+      const { employeeId } = response;
+      db.deleteEmployee(employeeId).then((results) => {
+        console.log('\n', results, '\n');
+        doMenuQuestions();
+      });
+    });
+  });
+};
 
 doMenuQuestions();
+

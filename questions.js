@@ -7,11 +7,17 @@ const MainMenuQuestions = [
         { value: 'view_departments', name: 'View all departments' },
         { value: 'view_roles', name: 'View all roles' },
         { value: 'view_employees', name: 'View all employees' },
+        { value: 'view_employees_by_manager', name: 'View employees by manager' },
+        { value: 'view_employees_by_department', name: 'View employees by department' },
         { value: 'add_department', name: 'Add a department' },
         { value: 'add_role', name: 'Add a role' },
         { value: 'add_employee', name: 'Add an employee' },
-        { value: 'update_role', name: 'Update an employee role' }
-      ]
+        { value: 'update_employee_manager', name: 'Update an employee manager' },
+        { value: 'update_employee_role', name: 'Update an employee role' },
+        { value: 'delete_department', name: 'Delete a department' },
+        { value: 'delete_role', name: 'Delete a role' },
+        { value: 'delete_employee', name: 'Delete an employee' },
+      ],
     }
   ];
   
@@ -63,14 +69,75 @@ const MainMenuQuestions = [
       choices: []
     }
   ];
-  
   const UpdateEmployeeRoleQuestions = [
+    {
+      type: 'list',
+      name: 'employee_id',
+      message: "Select the employee's  to update...",
+      choices: [],
+    },
     {
       type: 'list',
       name: 'role_id',
       message: "Select the employee's new role...",
-      choices: []
-    }
+    },
+  ];
+  const UpdateEmployeeManagerQuestions = [
+    {
+      type: 'list',
+      name: 'employee_id',
+      message: "Select the employee's ID to update...",
+      choices: [],
+    },
+    {
+      type: 'list',
+      name: 'manager_id',
+      message: "Select the employee's new manager...",
+      choices: [], 
+    },
+  ];
+  const ViewEmployeesByManagerQuestions = [
+    {
+      type: 'list',
+      name: 'manager_id',
+      message: 'Select the manager to view employees...',
+      choices: [],
+    },
+  ];
+  
+  const ViewEmployeesByDepartmentQuestions = [
+    {
+      type: 'list',
+      name: 'department_id',
+      message: 'Select the department to view employees...',
+      choices: [],
+    },
+  ];
+  const DeleteDepartmentQuestions = [
+    {
+      type: 'list',
+      name: 'department_id',
+      message: 'Select the department to delete...',
+      choices: [],
+    },
+  ];
+  
+  const DeleteRoleQuestions = [
+    {
+      type: 'list',
+      name: 'role_id',
+      message: 'Select the role to delete...',
+      choices: [],
+    },
+  ];
+  
+  const DeleteEmployeeQuestions = [
+    {
+      type: 'list',
+      name: 'employee_id',
+      message: 'Select the employee to delete...',
+      choices: [],
+    },
   ];
   
   module.exports = {
@@ -78,6 +145,14 @@ const MainMenuQuestions = [
     AddDepartmentQuestions,
     AddRoleQuestions,
     AddEmployeeQuestions,
-    UpdateEmployeeRoleQuestions
+    UpdateEmployeeRoleQuestions,
+    UpdateEmployeeManagerQuestions,
+    ViewEmployeesByManagerQuestions,
+    ViewEmployeesByDepartmentQuestions,
+    DeleteDepartmentQuestions,
+    DeleteRoleQuestions,
+    DeleteEmployeeQuestions,
   };
+  ``
+  
   

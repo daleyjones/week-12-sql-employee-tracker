@@ -1,6 +1,5 @@
 const Database = require('./Database.js');
 
-
 class EmployeeDatabase extends Database {
   constructor(options) {
     super(options);
@@ -50,7 +49,6 @@ class EmployeeDatabase extends Database {
         INNER JOIN role ON employee.role_id = role.id
         INNER JOIN department ON role.department_id = department.id
         LEFT JOIN employee AS manager ON employee.manager_id = manager.id`,
-      
         (err, results) => {
           if (err) {
             reject(err);
@@ -67,7 +65,6 @@ class EmployeeDatabase extends Database {
         if (err) {
           reject(err);
         }
-
         resolve(`Department ${department.department_name} added successfully`);
       });
     });
@@ -84,7 +81,6 @@ class EmployeeDatabase extends Database {
         if (err) {
           reject(err);
         }
-
         resolve(`Role ${role.title} added successfully`);
       });
     });
@@ -102,7 +98,6 @@ class EmployeeDatabase extends Database {
         if (err) {
           reject(err);
         }
-
         resolve(`Employee ${employee.first_name} ${employee.last_name} added successfully`);
       });
     });
@@ -115,11 +110,113 @@ class EmployeeDatabase extends Database {
         if (err) {
           reject(err);
         }
-
         resolve(`Employee ${employee_id} role updated successfully`);
       });
     });
   }
-}
 
-module.exports = EmployeeDatabase;
+  updateEmployeeManager(employee) {
+    const { employee_id, manager_id } = employee;
+    return new Promise((resolve, reject) => {
+      this.db.query('UPDATE employee SET manager_id = ? WHERE id = ?', [manager_id, employee_id], (err, result) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(`Employee ${employee_id} manager updated successfully`);
+      });
+    });
+  }
+  
+    
+      getEmployeesByManager(managerId) {
+        return new Promise((resolve, reject) => {
+          this.db.query(
+            `SELECT 
+            employee.id,
+            CONCAT_WS(' ', employee.first_name, employee.last_name) AS name,
+            role.title AS role_title,
+            role.salary AS role_salary,
+            department.name AS department_name,
+            IF(employee.manager_id IS NULL, '', CONCAT_WS(' ', manager.first_name, manager.last_name)) AS manager_name
+          FROM
+            employee
+            INNER JOIN role ON employee.role_id = role.id
+            INNER JOIN department ON role.department_id = department.id
+            LEFT JOIN employee AS manager ON employee.manager_id = manager.id
+          WHERE
+            employee.manager_id = ?`,
+            [managerId],
+            (err, results) => {
+              if (err) {
+                reject(err);
+              }
+              resolve(results);
+            }
+          );
+        });
+      }
+    
+      getEmployeesByDepartment(departmentId) {
+        return new Promise((resolve, reject) => {
+          this.db.query(
+            `SELECT 
+            employee.id,
+            CONCAT_WS(' ', employee.first_name, employee.last_name) AS name,
+            role.title AS role_title,
+            role.salary AS role_salary,
+            department.name AS department_name,
+            IF(employee.manager_id IS NULL, '', CONCAT_WS(' ', manager.first_name, manager.last_name)) AS manager_name
+          FROM
+            employee
+            INNER JOIN role ON employee.role_id = role.id
+            INNER JOIN department ON role.department_id = department.id
+            LEFT JOIN employee AS manager ON employee.manager_id = manager.id
+          WHERE
+            department.id = ?`,
+            [departmentId],
+            (err, results) => {
+              if (err) {
+                reject(err);
+              }
+              resolve(results);
+            }
+          );
+        });
+      }
+    
+      deleteDepartment(departmentId) {
+        return new Promise((resolve, reject) => {
+          this.db.query('DELETE FROM department WHERE id = ?', [departmentId], (err, result) => {
+            if (err) {
+              reject(err);
+            }
+            resolve(`Department ${departmentId} deleted successfully`);
+          });
+        });
+      }
+    
+      deleteRole(roleId) {
+        return new Promise((resolve, reject) => {
+          this.db.query('DELETE FROM role WHERE id = ?', [roleId], (err, result) => {
+            if (err) {
+              reject(err);
+            }
+            resolve(`Role ${roleId} deleted successfully`);
+          });
+        });
+      }
+    
+      deleteEmployee(employeeId) {
+        return new Promise((resolve, reject) => {
+          this.db.query('DELETE FROM employee WHERE id = ?', [employeeId], (err, result) => {
+            if (err) {
+              reject(err);
+            }
+            resolve(`Employee ${employeeId} deleted successfully`);
+          });
+        });
+      }
+    }
+    
+    module.exports = EmployeeDatabase;
+    
