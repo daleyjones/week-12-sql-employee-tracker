@@ -130,7 +130,7 @@ const add_role = () => {
 const add_employee = () => {
   db.getRoles().then((results) => {
     
-      const roleQuestion = AddEmployeeQuestions[2];
+      const roleQuestion = AddEmployeeQuestions[1];
       results.forEach((role) => {
 
         const role_summary = `${role.title} (${role.department_name}) ${role.salary}`;
@@ -170,42 +170,37 @@ const add_employee = () => {
 }
 
 const update_role = () => {
-
   db.getRoles().then((results) => {
-
-      const employeeQuestion = UpdateEmployeeRoleQuestions[0];
-      results.forEach((employee) => {
-        employeeQuestion.choices.push({
-          value: employee.id,
-          name: employee.name
-        });
+    const employeeQuestion = UpdateEmployeeRoleQuestions[0]; 
+    results.forEach((employee) => {
+      employeeQuestion.choices.push({
+        value: employee.id,
+        name: employee.name
       });
+    });
 
-
-
-      const roleQuestion = UpdateEmployeeRoleQuestions[1];
-      results.forEach((employee) => {
-        employeeQuestion.choices.push({
-          value: employee.id,
-          name: employee.name
-        });
+    const roleQuestion = UpdateEmployeeRoleQuestions[1]; 
+    results.forEach((role) => {
+      roleQuestion.choices.push({
+        value: role.id,
+        name: role.title
       });
+    });
 
-      inquirer
-        .prompt(UpdateEmployeeRoleQuestions)
-        .then((response) => {
-          db.updateEmployeeRole(response).then((results) => {
-              console.log('\n', results, '\n');
-              doMenuQuestions();
-            });
-          });
-        });
-      };
+    inquirer.prompt(UpdateEmployeeRoleQuestions).then((response) => {
+      db.updateEmployeeRole(response).then((results) => {
+        console.log('\n', results, '\n');
+        doMenuQuestions();
+      });
+    });
+  });
+};
 
 
 const update_employee_manager = () => {
   db.getEmployees().then((results) => {
     const employeeQuestion = UpdateEmployeeManagerQuestions[0];
+
     results.forEach((employee) => {
       employeeQuestion.choices.push({
         value: employee.id,
@@ -232,7 +227,8 @@ const update_employee_manager = () => {
 
 const view_employees_by_manager = () => {
   db.getEmployees().then((results) => {
-    const managerQuestion = ViewEmployeesByManagerQuestions[0];
+    const managerQuestion = ViewEmployeesByManagerQuestions[0]; 
+
     results.forEach((manager) => {
       managerQuestion.choices.push({
         value: manager.id,
@@ -250,9 +246,11 @@ const view_employees_by_manager = () => {
   });
 };
 
+
 const view_employees_by_department = () => {
   db.getDepartments().then((results) => {
-    const departmentQuestion = ViewEmployeesByDepartmentQuestions[0];
+    const departmentQuestion = ViewEmployeesByDepartmentQuestions[0]; 
+
     results.forEach((department) => {
       departmentQuestion.choices.push({
         value: department.id,
@@ -269,6 +267,7 @@ const view_employees_by_department = () => {
     });
   });
 };
+
 
 const delete_department = () => {
   db.getDepartments().then((results) => {
