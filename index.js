@@ -129,19 +129,19 @@ const add_role = () => {
 
 const add_employee = () => {
   db.getRoles().then((results) => {
-    
-      const roleQuestion = AddEmployeeQuestions[1];
-      results.forEach((role) => {
-
-        const role_summary = `${role.title} (${role.department_name}) ${role.salary}`;
-        roleQuestion.choices.push({
-          value: role.id,
-          name: role_summary
-        });
+    const roleQuestion = AddEmployeeQuestions[1];
+    roleQuestion.choices = []; 
+    results.forEach((role) => {
+      const role_summary = `${role.title} (${role.department_name}) ${role.salary}`;
+      roleQuestion.choices.push({
+        value: role.id,
+        name: role_summary
       });
- db.getEmployees().then((results) => {
+    });
 
+    db.getEmployees().then((results) => {
       const managerQuestion = AddEmployeeQuestions[2];
+      managerQuestion.choices = []; 
       results.forEach((employee) => {
         managerQuestion.choices.push({
           value: employee.id,
@@ -162,12 +162,10 @@ const add_employee = () => {
               console.log('\n', results, '\n');
               doMenuQuestions();
             });
-        
-        })
-      
+        });
     });
   });
-}
+};
 
 const update_role = () => {
 
