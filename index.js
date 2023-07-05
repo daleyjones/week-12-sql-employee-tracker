@@ -200,7 +200,7 @@ const update_role = () => {
 
 const update_employee_manager = () => {
   db.getEmployees().then((results) => {
-    
+
     const employeeQuestion = UpdateEmployeeManagerQuestions[0];
 
     results.forEach((employee) => {
@@ -229,7 +229,7 @@ const update_employee_manager = () => {
 
 const view_employees_by_manager = () => {
   db.getEmployees().then((results) => {
-    const managerQuestion = ViewEmployeesByManagerQuestions[0]; 
+    const managerQuestion = ViewEmployeesByManagerQuestions[0];
 
     results.forEach((manager) => {
       managerQuestion.choices.push({
@@ -241,7 +241,14 @@ const view_employees_by_manager = () => {
     inquirer.prompt(ViewEmployeesByManagerQuestions).then((response) => {
       const { manager_id } = response;
       db.getEmployeesByManager(manager_id).then((employees) => {
-        console.table(employees);
+        if (employees.length === 0) {
+          console.log('No employees found for the selected manager.');
+        } else {
+          console.table(employees);
+        }
+        doMenuQuestions();
+      }).catch((error) => {
+        console.error('Error retrieving employees:', error);
         doMenuQuestions();
       });
     });
