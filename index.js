@@ -289,8 +289,8 @@ const delete_department = () => {
     });
 
     inquirer.prompt(DeleteDepartmentQuestions).then((response) => {
-      const { departmentId } = response;
-      db.deleteDepartment(departmentId).then((results) => {
+      const { department_id } = response;
+      db.deleteDepartment(department_id).then((results) => {
         console.log('\n', results, '\n');
         doMenuQuestions();
       });
