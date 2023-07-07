@@ -18,7 +18,7 @@ node index.js
 The application will present a menu with various options. Use the arrow keys to navigate and select an option.
 
 ## Walkthrough Video
-Please watch the following walkthrough video to see the functionality of the SQL Employee Tracker: [Visit the Video Link](https://drive.google.com/file/d/1A0XvwjEKpGj4ClcF0GQA4rVUXDFVJGIp/view)
+Please watch the following walkthrough video to see the functionality of the SQL Employee Tracker: [Visit the Video Link](https://drive.google.com/file/d/15zbvk7t78PG0uFLwk0tmfmqLeISMVexe/view)
 
 In the video, you will see how to perform actions such as viewing departments, roles, and employees, adding new departments, roles, and employees, and updating employee roles using the command-line interface.
 
